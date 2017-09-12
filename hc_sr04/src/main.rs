@@ -17,23 +17,17 @@ fn calc_distance(output: u64, input: u64) -> sysfs_gpio::Result<()> {
     let input = Pin::new(input);
 
     output.with_exported(|| {
-        let start = PreciseTime::now();
-
         output.set_direction(Direction::High)?;
+
+        let start = PreciseTime::now();
 
         sleep(Duration::from_millis(1));
 
         output.set_value(1)?;
 
-        while input.get_value().unwrap() == 0 {
+        while input.get_value().unwrap() == 1 {
             break;
         };
-
-        loop {
-            if let Ok(v) = input.get_value() {
-                if v == 0 { break; }
-            } else { continue; }
-        }
 
         let time = start.to(PreciseTime::now());
 
