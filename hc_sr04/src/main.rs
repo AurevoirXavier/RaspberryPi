@@ -17,12 +17,12 @@ fn calc_distance(output: u64, input: u64) -> sysfs_gpio::Result<()> {
     input.set_direction(Direction::In)?;
 
     output.with_exported(|| {
-        if let Ok(v) = input.get_value() {
-            if v == 0 {
-                println!("Already high.");
-            }
-        }
-        input.set_value(0)?;
+        //        if let Ok(v) = input.get_value() {
+        //            if v == 0 {
+        //                println!("Already high.");
+        //            }
+        //        }
+        //        input.set_value(0)?;
 
         output.set_direction(Direction::High)?;
 
