@@ -22,11 +22,20 @@ fn calc_distance(output: u64, input: u64) -> sysfs_gpio::Result<()> {
         sleep(Duration::new(0, 15000));
 
         output.set_value(0)?;
+
+        println!("input: {}", input.get_direction().unwrap());
+        println!("output: {}", output.get_direction().unwrap());
+        println!("input: {}", input.get_value().unwrap());
+        println!("output: {}", output.get_value().unwrap());
+
         loop {
             if input.get_value().unwrap() != 0 {
                 break;
             }
         }
+
+        println!("input: {}", input.get_value().unwrap());
+        println!("output: {}", output.get_value().unwrap());
 
         let start = Instant::now();
 
@@ -35,6 +44,9 @@ fn calc_distance(output: u64, input: u64) -> sysfs_gpio::Result<()> {
                 break;
             }
         }
+
+        println!("input: {}", input.get_value().unwrap());
+        println!("output: {}", output.get_value().unwrap());
 
         let time = start.elapsed().subsec_nanos();
 
