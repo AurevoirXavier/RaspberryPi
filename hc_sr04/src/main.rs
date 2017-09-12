@@ -23,8 +23,8 @@ fn calc_distance(output: u64, input: u64) -> sysfs_gpio::Result<()> {
 
         output.set_value(0)?;
 
-        println!("input: {}", input.get_direction().unwrap());
-        println!("output: {}", output.get_direction().unwrap());
+        println!("input: {:?}", input.get_direction().unwrap());
+        println!("output: {:?}", output.get_direction().unwrap());
         println!("input: {}", input.get_value().unwrap());
         println!("output: {}", output.get_value().unwrap());
 
