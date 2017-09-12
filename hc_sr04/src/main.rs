@@ -36,7 +36,7 @@ fn calc_distance(output: u64, input: u64) -> sysfs_gpio::Result<()> {
             break;
         };
 
-        let total_time_ms = start.elapsed().subsec_nanos() * 1000000;
+        let total_time_ms = start.elapsed().subsec_nanos() / 1000000;
 
         println!("Use: {}ms\nDistance: {}mm", total_time_ms, total_time_ms * 171500);
 
