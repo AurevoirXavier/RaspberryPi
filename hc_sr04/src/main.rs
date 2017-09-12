@@ -6,7 +6,6 @@ use std::thread::sleep;
 use std::env;
 use std::time::Duration;
 use time::PreciseTime;
-use wiringpi::bindings::delayMicroseconds;
 
 struct Args {
     output: u64,
@@ -29,6 +28,12 @@ fn calc_distance(output: u64, input: u64) -> sysfs_gpio::Result<()> {
         while input.get_value().unwrap() == 0 {
             break;
         };
+
+        loop {
+            if let Some(v) = input.get_value() {
+                if v == 0 { break; }
+            } else { continue; }
+        }
 
         let time = start.to(PreciseTime::now());
 
