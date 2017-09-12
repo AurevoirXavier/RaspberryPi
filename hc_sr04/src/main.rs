@@ -22,20 +22,23 @@ fn calc_distance(output: u64, input: u64) -> sysfs_gpio::Result<()> {
         sleep(Duration::new(0, 15000));
 
         output.set_value(0)?;
-
-        while input.get_value().unwrap() == 0 {
-            continue;
-        };
+        loop {
+            if input.get_value().unwrap() != 0 {
+                break;
+            }
+        }
 
         let start = Instant::now();
 
-        while input.get_value().unwrap() != 0 {
-            continue;
+        loop {
+            if input.get_value().unwrap() == 0 {
+                break;
+            }
         }
 
         let time = start.elapsed().subsec_nanos();
 
-        println!("Distance: {}mm", time as f64 * 0.171500 );
+        println!("Distance: {}mm", time as f64 * 0.171500);
 
         Ok(())
     })
