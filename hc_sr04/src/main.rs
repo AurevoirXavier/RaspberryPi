@@ -1,10 +1,10 @@
 extern crate sysfs_gpio;
 extern crate time;
-extern crate wiringpi;
 
 use sysfs_gpio::{Direction, Pin};
 use std::thread::sleep;
 use std::env;
+use std::time::Duration;
 use time::PreciseTime;
 use wiringpi::bindings::delayMicroseconds;
 
@@ -22,13 +22,13 @@ fn calc_distance(output: u64, input: u64) -> sysfs_gpio::Result<()> {
 
         output.set_direction(Direction::High)?;
 
-        delayMicroseconds(10);
+        sleep(Duration::from_millis(1));
 
         output.set_value(1)?;
 
         while input.get_value().unwrap() == 0 {
             break;
-        }
+        };
 
         let time = start.to(PreciseTime::now());
 
