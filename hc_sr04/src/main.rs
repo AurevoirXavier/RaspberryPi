@@ -30,7 +30,7 @@ fn calc_distance(output: u64, input: u64) -> sysfs_gpio::Result<()> {
         };
 
         loop {
-            if let Some(v) = input.get_value() {
+            if let Ok(v) = input.get_value() {
                 if v == 0 { break; }
             } else { continue; }
         }
