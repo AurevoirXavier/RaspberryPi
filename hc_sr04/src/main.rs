@@ -38,7 +38,7 @@ fn calc_distance(output: u64, input: u64) -> sysfs_gpio::Result<()> {
 
         let time = start - Instant::now().elapsed().subsec_nanos();
 
-        println!("Distance = {}", time * 171500 / 1000000);
+        println!("Distance = {}mm", time * 171500 / 1000000);
 
         Ok(())
     })
