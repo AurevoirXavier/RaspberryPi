@@ -14,43 +14,27 @@ fn calc_distance(output: u64, input: u64) -> sysfs_gpio::Result<()> {
     let output = Pin::new(output);
     let input = Pin::new(input);
 
-    input.set_direction(Direction::In)?;
-
     output.with_exported(|| {
+        input.set_direction(Direction::In)?;
         output.set_direction(Direction::High)?;
 
         sleep(Duration::new(0, 15000));
 
         output.set_value(0)?;
 
-        println!("input: {:?}", input.get_direction().unwrap());
-        println!("output: {:?}", output.get_direction().unwrap());
-        println!("input: {}", input.get_value().unwrap());
-        println!("output: {}", output.get_value().unwrap());
-
-        loop {
-            if input.get_value().unwrap() != 0 {
-                break;
-            }
+        while input.get_value().unwrap() == 0 {
+            continue;
         }
-
-        println!("input: {}", input.get_value().unwrap());
-        println!("output: {}", output.get_value().unwrap());
 
         let start = Instant::now();
 
-        loop {
-            if input.get_value().unwrap() == 0 {
-                break;
-            }
+        while input.get_value().unwrap() == 1 {
+            continue;
         }
-
-        println!("input: {}", input.get_value().unwrap());
-        println!("output: {}", output.get_value().unwrap());
 
         let time = start.elapsed().subsec_nanos();
 
-        println!("Distance: {}mm", time as f64 * 0.171500);
+        println!("Distance: {}mm", time as f64 * 0.001715);
 
         Ok(())
     })
@@ -81,9 +65,16 @@ fn main() {
     match get_args() {
         None => print_usage(),
         Some(args) => {
-            match calc_distance(args.output, args.input) {
-                Ok(()) => println!("Success!"),
-                Err(err) => println!("We have a calculate problem: {}", err),
+            let output = args.output;
+            let input = args.input;
+
+            loop {
+                match calc_distance(output, input) {
+                    Ok(()) => println!("Success!"),
+                    Err(err) => println!("We have a calculate problem: {}", err),
+                }
+
+                sleep(Duration::from_secs(1));
             }
         }
     }
