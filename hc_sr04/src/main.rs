@@ -1,11 +1,9 @@
 extern crate sysfs_gpio;
-extern crate time;
 
 use sysfs_gpio::{Direction, Pin};
 use std::thread::sleep;
 use std::env;
-use std::time::Duration;
-use time::PreciseTime;
+use std::time::{Duration, Instant};
 
 struct Args {
     output: u64,
@@ -16,12 +14,21 @@ fn calc_distance(output: u64, input: u64) -> sysfs_gpio::Result<()> {
     let output = Pin::new(output);
     let input = Pin::new(input);
 
+    input.set_direction(Direction::In)?;
+
     output.with_exported(|| {
+        if let Ok(v) = input.get_value() {
+            if v == 0 {
+                println!("Already high.");
+            }
+        }
+        input.set_value(0)?;
+
         output.set_direction(Direction::High)?;
 
-        let start = PreciseTime::now();
+        let start = Instant::now().elapsed().subsec_nanos();
 
-        sleep(Duration::from_millis(1));
+        sleep(Duration::new(0, 10000));
 
         output.set_value(1)?;
 
@@ -29,7 +36,7 @@ fn calc_distance(output: u64, input: u64) -> sysfs_gpio::Result<()> {
             break;
         };
 
-        let time = start.to(PreciseTime::now());
+        let time = start - Instant::now().elapsed().subsec_nanos();
 
         println!("Distance = {}", time);
 
