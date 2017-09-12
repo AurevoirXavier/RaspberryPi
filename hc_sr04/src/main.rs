@@ -17,28 +17,25 @@ fn calc_distance(output: u64, input: u64) -> sysfs_gpio::Result<()> {
     input.set_direction(Direction::In)?;
 
     output.with_exported(|| {
-        //        if let Ok(v) = input.get_value() {
-        //            if v == 0 {
-        //                println!("Already high.");
-        //            }
-        //        }
-        //        input.set_value(0)?;
-
         output.set_direction(Direction::High)?;
-
-        let start = Instant::now();
 
         sleep(Duration::new(0, 15000));
 
-        output.set_value(1)?;
+        output.set_value(0)?;
 
-        while input.get_value().unwrap() != 0 {
-            break;
+        while input.get_value().unwrap() == 0 {
+            continue;
         };
 
-        let time = start.elapsed().subsec_nanos() as u64;
+        let start = Instant::now();
 
-        println!("Distance: {}mm", time * 343 / 2000000);
+        while input.get_value().unwrap() != 0 {
+            continue;
+        }
+
+        let time = start.elapsed().subsec_nanos();
+
+        println!("Distance: {}mm", time as f64 * 0.171500 );
 
         Ok(())
     })
