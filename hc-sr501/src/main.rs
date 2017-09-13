@@ -27,7 +27,13 @@ fn detect(pin: u64, duration_s: u64, period_s: u64, led: Option<u64>) -> sysfs_g
                 println!("Detected!");
 
                 if let Some(led) = led {
-                    blink(led, period_s * 2000, 200);
+                    if let Ok(_) = blink(led, period_s * 1000, 200) {
+                        println!("Blinking!");
+                    } else {
+                        println!("Led pin not set.");
+                    }
+                } else {
+                    break;
                 }
             } else {
                 println!("Nobody.");
