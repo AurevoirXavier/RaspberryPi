@@ -30,7 +30,7 @@ fn detect(pin: u64, duration_s: u64, period_s: u64, led: Option<u64>) -> sysfs_g
             }
 
             if let Some(led) = led {
-                blink(led, period_s, 200);
+                blink(led, period_s * 1000, 200);
             }
 
             sleep(Duration::from_secs(period_s))
