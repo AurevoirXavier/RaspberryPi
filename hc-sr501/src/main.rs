@@ -46,9 +46,9 @@ fn get_args() -> Option<Args> {
 
     let pin = if let Ok(pin) = args[1].parse::<u64>() { pin } else { return None; };
 
-    let duration_ms = if let Ok(ms) = args[2].parse::<u64>() { ms } else { return None; };
+    let duration_s = if let Ok(s) = args[2].parse::<u64>() { s } else { return None; };
 
-    let period_ms = if let Ok(ms) = args[3].parse::<u64>() { ms } else { return None; };
+    let period_s = if let Ok(s) = args[3].parse::<u64>() { s } else { return None; };
 
     Some(Args {
         pin,
