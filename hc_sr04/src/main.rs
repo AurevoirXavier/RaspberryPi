@@ -48,12 +48,11 @@ fn get_args() -> Option<Args> {
     let args: Vec<String> = env::args().collect();
 
     if args.len() != 3 {
-        return None;
+        return None
     }
 
-    let output = if let Ok(output) = args[1].parse::<u64>() { output } else { return None; };
-
-    let input = if let Ok(input) = args[2].parse::<u64>() { input } else { return None; };
+    let output = if let Ok(output) = args[1].parse::<u64>() { output } else { return None };
+    let input = if let Ok(input) = args[2].parse::<u64>() { input } else { return None };
 
     Some(Args {
         output,

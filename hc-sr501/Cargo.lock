@@ -2,6 +2,7 @@
 name = "hc-sr501"
 version = "0.1.0"
 dependencies = [
+ "led 0.1.0",
  "sysfs_gpio 0.5.1 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
@@ -30,6 +31,13 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "winapi 0.2.8 (registry+https://github.com/rust-lang/crates.io-index)",
  "winapi-build 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "led"
+version = "0.1.0"
+dependencies = [
+ "sysfs_gpio 0.5.1 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
