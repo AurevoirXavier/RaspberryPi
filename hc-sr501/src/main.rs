@@ -25,12 +25,12 @@ fn detect(pin: u64, duration_s: u64, period_s: u64, led: Option<u64>) -> sysfs_g
         for _ in 0..iterations {
             if input.get_value().unwrap() == 1 {
                 println!("Detected!");
+
+                if let Some(led) = led {
+                    blink(led, period_s * 2000, 200);
+                }
             } else {
                 println!("Nobody.");
-            }
-
-            if let Some(led) = led {
-                blink(led, period_s * 1000, 200);
             }
 
             sleep(Duration::from_secs(period_s))
