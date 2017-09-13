@@ -41,7 +41,7 @@ fn calc_distance(output: u64, input: u64) -> sysfs_gpio::Result<()> {
 }
 
 fn print_usage() {
-    println!("Usage: cargo run <input> <output>");
+    println!("Usage: cargo run <output> <input>");
 }
 
 fn get_args() -> Option<Args> {
@@ -71,7 +71,7 @@ fn main() {
             loop {
                 match calc_distance(output, input) {
                     Ok(()) => println!("Success!"),
-                    Err(err) => println!("We have a calculate problem: {}", err),
+                    Err(err) => println!("Something wrong when measure: {}", err),
                 }
 
                 sleep(Duration::from_secs(1));
