@@ -21,6 +21,8 @@ fn detect(pin: u64, duration_s: u64, period_s: u64) -> sysfs_gpio::Result<()> {
 
         for _ in 0..iterations {
             if input.get_value().unwrap() == 1 {
+                input.set_value(0)?;
+
                 println!("Detected!");
             } else {
                 println!("Nobody.");
