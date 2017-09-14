@@ -10,17 +10,17 @@ use led::blink;
 struct Args {
     pin: u64,
     duration_s: u64,
-    period_ms: u64,
+    period_s: u64,
     led: Option<u64>,
 }
 
-fn detect(pin: u64, duration_s: u64, period_ms: u64, led: Option<u64>) -> sysfs_gpio::Result<()> {
+fn detect(pin: u64, duration_s: u64, period_s: u64, led: Option<u64>) -> sysfs_gpio::Result<()> {
     let input = Pin::new(pin);
 
     input.with_exported(|| {
         input.set_direction(Direction::In)?;
 
-        let iterations = duration_s / (period_ms / 1000);
+        let iterations = duration_s / period_s;
 
         for _ in 0..iterations {
             if input.get_value().unwrap() == 1 {
@@ -29,7 +29,8 @@ fn detect(pin: u64, duration_s: u64, period_ms: u64, led: Option<u64>) -> sysfs_
                 if let Some(led) = led {
                     println!("Blinking.");
 
-                    if let Ok(_) = blink(led, period_ms, 200) {
+                    if let Ok(_) = blink(led, period_s * 1000, 200) {
+
                         continue;
                     }
                 }
@@ -38,7 +39,7 @@ fn detect(pin: u64, duration_s: u64, period_ms: u64, led: Option<u64>) -> sysfs_
                 println!("Nobody.");
             }
 
-            sleep(Duration::from_millis(period_ms));
+            sleep(Duration::from_secs(period_s))
         }
 
         Ok(())
@@ -47,7 +48,7 @@ fn detect(pin: u64, duration_s: u64, period_ms: u64, led: Option<u64>) -> sysfs_
 
 fn print_usage() {
     println!(
-        "Usage: cargo run <output> <duration_s> <(Recommend 4000)period_ms> <(Option) led>"
+        "Usage: cargo run <output> <duration_s> <(Recommend 4)period_s> <(Option) led>"
     );
 }
 
@@ -69,7 +70,7 @@ fn get_args() -> Option<Args> {
         } else {
             return None;
         };
-        let period_ms = if let Ok(s) = args[3].parse::<u64>() {
+        let period_s = if let Ok(s) = args[3].parse::<u64>() {
             s
         } else {
             return None;
@@ -88,7 +89,7 @@ fn get_args() -> Option<Args> {
         Some(Args {
             pin,
             duration_s,
-            period_ms,
+            period_s,
             led,
         })
     } else {
@@ -98,7 +99,7 @@ fn get_args() -> Option<Args> {
 
 fn main() {
     if let Some(args) = get_args() {
-        match detect(args.pin, args.duration_s, args.period_ms, args.led) {
+        match detect(args.pin, args.duration_s, args.period_s, args.led) {
             Ok(()) => println!("Success!"),
             Err(err) => println!("Something wrong when detect: {}", err),
         }
