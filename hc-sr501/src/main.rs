@@ -32,13 +32,16 @@ fn detect(pin: u64, duration_s: u64, period_s: u64, led: Option<u64>) -> sysfs_g
                     println!("Blinking.");
 
                     if let Ok(_) = blink(led, 4000, 500) {
+                        if iterations < 0 {
+                            return Ok(())
+                        }
+
                         iterations -= 4;
 
                         continue;
                     }
                 }
             }
-
             sleep(Duration::from_secs(period_s));
         }
 
