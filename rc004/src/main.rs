@@ -26,7 +26,7 @@ fn detect(pin: u64, led: Option<u64>) -> sysfs_gpio::Result<()> {
             if let Some(led) = led {
                 println!("Blinking.");
 
-                match blink(led, 1001, 1000) {
+                match blink(led, 1000, 500) {
                     Ok(()) => return Ok(()),
                     Err(err) => println!("Something wrong when blinking: {}", err),
                 }
