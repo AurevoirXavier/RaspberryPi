@@ -7,7 +7,7 @@ use std::env::args;
 use std::thread::sleep;
 use std::time::Duration;
 use led::blink;
-use time::precise_time_s;
+use time::get_time;
 
 struct Args {
     pin: u64,
@@ -26,7 +26,7 @@ fn detect(pin: u64, duration_s: u64, period_s: u64, led: Option<u64>) -> sysfs_g
 
         for _ in 0..iterations {
             if input.get_value().unwrap() == 1 {
-                println!("{:?}, Detected!", precise_time_s());
+                println!("{:?}, Detected!", get_time());
 
                 if let Some(led) = led {
                     println!("Blinking.");
