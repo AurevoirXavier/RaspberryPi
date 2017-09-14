@@ -49,7 +49,7 @@ fn get_args() -> Option<Args> {
 
     let mut led = None;
 
-    if let 1 ... 2 = len {
+    if let 2 ... 3 = len {
         let pin = if let Ok(pin) = args[1].parse::<u64>() { pin } else { return None; };
 
         if len == 3 {
@@ -65,13 +65,10 @@ fn get_args() -> Option<Args> {
 }
 
 fn main() {
-    match get_args() {
-        None => print_usage(),
-        Some(args) => {
-            match detect(args.pin, args.led) {
-                Ok(()) => println!("Success!"),
-                Err(err) => println!("Something wrong when detect: {}", err),
-            }
+    if let Some(args) = get_args() {
+        match detect(args.pin, args.led) {
+            Ok(()) => println!("Success!"),
+            Err(err) => println!("Something wrong when detect: {}", err),
         }
-    }
+    } else { print_usage(); }
 }
