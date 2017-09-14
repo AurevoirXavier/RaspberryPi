@@ -5,13 +5,12 @@ pub fn print_usage() {
 }
 
 fn main() {
-    match led::get_args() {
-        None => print_usage(),
-        Some(args) => {
-            match led::blink(args.pin, args.duration_ms, args.period_ms) {
-                Ok(()) => println!("Success!"),
-                Err(err) => println!("We have a blinking problem: {}", err),
-            }
+    if let Some(args) = led::get_args() {
+        match led::blink(args.pin, args.duration_ms, args.period_ms) {
+            Ok(()) => println!("Success!"),
+            Err(err) => println!("We have a blinking problem: {}", err),
         }
+    } else {
+        print_usage();
     }
 }

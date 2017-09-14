@@ -11,7 +11,7 @@ use chrono::Local;
 
 struct Args {
     pin: u64,
-    led: Option<u64>
+    led: Option<u64>,
 }
 
 fn detect(pin: u64, led: Option<u64>) -> sysfs_gpio::Result<()> {
@@ -48,8 +48,12 @@ fn get_args() -> Option<Args> {
 
     let mut led = None;
 
-    if let 2 ... 2 = len {
-        let pin = if let Ok(pin) = args[1].parse::<u64>() { pin } else { return None; };
+    if let 2...2 = len {
+        let pin = if let Ok(pin) = args[1].parse::<u64>() {
+            pin
+        } else {
+            return None;
+        };
 
         if len == 3 {
             led = if let Ok(led) = args[2].parse::<u64>() {
@@ -57,10 +61,14 @@ fn get_args() -> Option<Args> {
             } else {
                 return None;
             };
-        } else { println!("Led pin not set."); }
+        } else {
+            println!("Led pin not set.");
+        }
 
         Some(Args { pin, led })
-    } else { None }
+    } else {
+        None
+    }
 }
 
 fn main() {
@@ -76,5 +84,7 @@ fn main() {
 
             sleep(Duration::from_secs(1));
         }
-    } else { print_usage(); }
+    } else {
+        print_usage();
+    }
 }

@@ -7,7 +7,7 @@ use std::time::{Duration, Instant};
 
 struct Args {
     output: u64,
-    input: u64
+    input: u64,
 }
 
 fn calc_distance(output: u64, input: u64) -> sysfs_gpio::Result<()> {
@@ -48,33 +48,37 @@ fn get_args() -> Option<Args> {
     let args: Vec<String> = env::args().collect();
 
     if args.len() != 3 {
-        return None
+        return None;
     }
 
-    let output = if let Ok(output) = args[1].parse::<u64>() { output } else { return None };
-    let input = if let Ok(input) = args[2].parse::<u64>() { input } else { return None };
-
-    Some(Args {
-        output,
+    let output = if let Ok(output) = args[1].parse::<u64>() {
+        output
+    } else {
+        return None;
+    };
+    let input = if let Ok(input) = args[2].parse::<u64>() {
         input
-    })
+    } else {
+        return None;
+    };
+
+    Some(Args { output, input })
 }
 
 fn main() {
-    match get_args() {
-        None => print_usage(),
-        Some(args) => {
-            let output = args.output;
-            let input = args.input;
+    if let Some(args) = get_args() {
+        let output = args.output;
+        let input = args.input;
 
-            loop {
-                match calc_distance(output, input) {
-                    Ok(()) => println!("Success!"),
-                    Err(err) => println!("Something wrong when measure: {}", err),
-                }
-
-                sleep(Duration::from_secs(1));
+        loop {
+            match calc_distance(output, input) {
+                Ok(()) => println!("Success!"),
+                Err(err) => println!("Something wrong when measure: {}", err),
             }
+
+            sleep(Duration::from_secs(1));
         }
+    } else {
+        print_usage();
     }
 }

@@ -13,7 +13,7 @@ struct Args {
     pin: u64,
     duration_s: u64,
     period_s: u64,
-    led: Option<u64>
+    led: Option<u64>,
 }
 
 fn detect(pin: u64, duration_s: u64, period_s: u64, led: Option<u64>) -> sysfs_gpio::Result<()> {
@@ -42,7 +42,7 @@ fn detect(pin: u64, duration_s: u64, period_s: u64, led: Option<u64>) -> sysfs_g
                     }
                 }
             }
-            
+
             sleep(Duration::from_secs(period_s));
         }
 
@@ -100,13 +100,12 @@ fn get_args() -> Option<Args> {
 }
 
 fn main() {
-    match get_args() {
-        None => print_usage(),
-        Some(args) => {
-            match detect(args.pin, args.duration_s, args.period_s, args.led) {
-                Ok(()) => println!("Success!"),
-                Err(err) => println!("Something wrong when detect: {}", err),
-            }
+    if let Some(args) = get_args() {
+        match detect(args.pin, args.duration_s, args.period_s, args.led) {
+            Ok(()) => println!("Success!"),
+            Err(err) => println!("Something wrong when detect: {}", err),
         }
+    } else {
+        print_usage();
     }
 }
