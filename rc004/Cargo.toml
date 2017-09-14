@@ -6,3 +6,4 @@ authors = ["AurevoirXavier <c.estlavie@icloud.com>"]
 [dependencies]
 sysfs_gpio = "*"
 led = { path = "../led" }
+chrono = "*"

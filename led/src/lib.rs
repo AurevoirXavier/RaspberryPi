@@ -3,7 +3,7 @@ extern crate sysfs_gpio;
 use sysfs_gpio::{Direction, Pin};
 use std::time::Duration;
 use std::thread::sleep;
-use std::env;
+use std::env::args;
 
 pub struct Args {
     pub pin: u64,
@@ -40,7 +40,7 @@ pub fn print_usage() {
 }
 
 pub fn get_args() -> Option<Args> {
-    let args: Vec<String> = env::args().collect();
+    let args: Vec<String> = args().collect();
 
     if args.len() != 4 {
         return None

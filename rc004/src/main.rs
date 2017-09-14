@@ -1,9 +1,13 @@
 extern crate sysfs_gpio;
 extern crate led;
+extern crate chrono;
 
 use sysfs_gpio::{Direction, Pin};
+use std::env::args;
 use std::thread::sleep;
 use std::time::Duration;
+use led::blink;
+use chrono::Local;
 
 struct Args {
     pin: u64,
