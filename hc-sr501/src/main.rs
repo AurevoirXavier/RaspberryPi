@@ -48,7 +48,7 @@ fn detect(pin: u64, duration_s: u64, period_s: u64, led: Option<u64>) -> sysfs_g
 
 fn print_usage() {
     println!(
-        "Usage: cargo run <output> <duration_s> <(Recommend 4)period_s> <(Option) led>"
+        "Usage: cargo run <output> <duration_s> <(Recommend 6)period_s> <(Option) led>"
     );
 }
 
