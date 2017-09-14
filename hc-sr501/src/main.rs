@@ -33,6 +33,8 @@ fn detect(pin: u64, duration_s: u64, period_s: u64, led: Option<u64>) -> sysfs_g
                         continue;
                     }
                 }
+                
+                println!("{:?}", input.get_value());
             } else {
                 println!("Nobody.");
             }
