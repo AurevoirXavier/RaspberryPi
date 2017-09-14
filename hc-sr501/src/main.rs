@@ -1,11 +1,13 @@
 extern crate sysfs_gpio;
 extern crate led;
+extern crate time;
 
 use sysfs_gpio::{Direction, Pin};
 use std::env::args;
 use std::thread::sleep;
 use std::time::Duration;
 use led::blink;
+use time::now;
 
 struct Args {
     pin: u64,
@@ -20,24 +22,22 @@ fn detect(pin: u64, duration_s: u64, period_s: u64, led: Option<u64>) -> sysfs_g
     input.with_exported(|| {
         input.set_direction(Direction::In)?;
 
-        let mut iterations = duration_s;
+        let iterations = duration_s / period_s;
 
         for _ in 0..iterations {
             if input.get_value().unwrap() == 1 {
-                println!("Detected!");
+                println!("{:?}, Detected!", now());
 
                 if let Some(led) = led {
                     println!("Blinking.");
 
                     if let Ok(_) = blink(led, period_s * 1000, 200) {
-                        iterations -= period_s;
-                        
                         continue;
                     }
                 }
-            } else {
-                println!("Nobody.");
             }
+
+            sleep(Duration::from_secs(period_s));
         }
 
         Ok(())
@@ -45,9 +45,7 @@ fn detect(pin: u64, duration_s: u64, period_s: u64, led: Option<u64>) -> sysfs_g
 }
 
 fn print_usage() {
-    println!(
-        "Usage: cargo run <output> <duration_s> <(Recommend 6)period_s> <(Option) led>"
-    );
+    println!("Usage: cargo run <output> <duration_s> <(Recommend 6)period_s> <(Option) led>");
 }
 
 fn get_args() -> Option<Args> {
