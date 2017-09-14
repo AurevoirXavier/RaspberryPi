@@ -38,7 +38,7 @@ fn detect(pin: u64, duration_s: u64, period_ms: u64, led: Option<u64>) -> sysfs_
                 println!("Nobody.");
             }
 
-            sleep(Duration::from_secs(period_s))
+            sleep(Duration::from_millis(period_ms));
         }
 
         Ok(())
@@ -88,7 +88,7 @@ fn get_args() -> Option<Args> {
         Some(Args {
             pin,
             duration_s,
-            period_s,
+            period_ms,
             led,
         })
     } else {
