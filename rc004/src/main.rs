@@ -19,7 +19,6 @@ fn detect(pin: u64, led: Option<u64>) -> sysfs_gpio::Result<()> {
 
     input.with_exported(|| {
         input.set_direction(Direction::In)?;
-        input.set_value(1)?;
 
         if input.get_value().unwrap() == 0 {
             println!("{}, Detected!", Local::now().format("%m-%d-%Y %H:%M:%S"));
