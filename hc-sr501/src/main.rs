@@ -20,7 +20,7 @@ fn detect(pin: u64, duration_s: u64, period_ms: u64, led: Option<u64>) -> sysfs_
     input.with_exported(|| {
         input.set_direction(Direction::In)?;
 
-        let iterations = duration_s / period_ms / 1000;
+        let iterations = duration_s / (period_ms / 1000);
 
         for _ in 0..iterations {
             if input.get_value().unwrap() == 1 {
