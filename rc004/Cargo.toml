@@ -1,0 +1,8 @@
+[package]
+name = "rc004"
+version = "0.1.0"
+authors = ["AurevoirXavier <c.estlavie@icloud.com>"]
+
+[dependencies]
+sysfs_gpio = "*"
+led = { path = "../led" }
