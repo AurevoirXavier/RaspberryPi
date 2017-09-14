@@ -69,7 +69,7 @@ fn main() {
         let led = args.led;
 
         loop {
-            match detect(args.pin, args.led) {
+            match detect(pin, led) {
                 Ok(()) => println!("Success!"),
                 Err(err) => println!("Something wrong when detect: {}", err),
             }
