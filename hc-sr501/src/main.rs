@@ -30,7 +30,7 @@ fn detect(pin: u64, duration_s: u64, period_s: u64, led: Option<u64>) -> sysfs_g
                     println!("Blinking.");
 
                     if let Ok(_) = blink(led, period_s * 1000, 200) {
-                        if let Ok(1) = input.get_value {
+                        if let Ok(1) = input.get_value() {
                             input.set_value(0)?;
                         }
 
