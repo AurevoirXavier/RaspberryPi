@@ -20,7 +20,7 @@ fn detect(pin: u64, duration_s: u64, period_s: u64, led: Option<u64>) -> sysfs_g
     input.with_exported(|| {
         input.set_direction(Direction::In)?;
 
-        let iterations = duration_s / period_s;
+        let mut iterations = duration_s;
 
         for _ in 0..iterations {
             if input.get_value().unwrap() == 1 {
@@ -30,16 +30,14 @@ fn detect(pin: u64, duration_s: u64, period_s: u64, led: Option<u64>) -> sysfs_g
                     println!("Blinking.");
 
                     if let Ok(_) = blink(led, period_s * 1000, 200) {
-
+                        iterations -= period_s;
+                        
                         continue;
                     }
                 }
-
             } else {
                 println!("Nobody.");
             }
-
-            sleep(Duration::from_secs(period_s))
         }
 
         Ok(())
