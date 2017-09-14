@@ -22,7 +22,7 @@ fn detect(pin: u64, duration_s: u64, period_s: u64, led: Option<u64>) -> sysfs_g
     input.with_exported(|| {
         input.set_direction(Direction::In)?;
 
-        let iterations = duration_s / period_s;
+        let mut iterations = duration_s / period_s;
 
         for _ in 0..iterations {
             if input.get_value().unwrap() == 1 {
@@ -31,7 +31,9 @@ fn detect(pin: u64, duration_s: u64, period_s: u64, led: Option<u64>) -> sysfs_g
                 if let Some(led) = led {
                     println!("Blinking.");
 
-                    if let Ok(_) = blink(led, period_s * 1000, 200) {
+                    if let Ok(_) = blink(led, 4, 500) {
+                        iterations -= 4;
+
                         continue;
                     }
                 }
@@ -45,7 +47,7 @@ fn detect(pin: u64, duration_s: u64, period_s: u64, led: Option<u64>) -> sysfs_g
 }
 
 fn print_usage() {
-    println!("Usage: cargo run <output> <duration_s> <(Recommend 6)period_s> <(Option) led>");
+    println!("Usage: cargo run <output> <duration_s> <(Recommend 1)period_s> <(Option) led>");
 }
 
 fn get_args() -> Option<Args> {
