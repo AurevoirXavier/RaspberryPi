@@ -48,7 +48,7 @@ fn get_args() -> Option<Args> {
 
     let mut led = None;
 
-    if let 2...3 = len {
+    if let 2 ... 3 = len {
         let pin = if let Ok(pin) = args[1].parse::<u64>() {
             pin
         } else {
@@ -78,11 +78,9 @@ fn main() {
 
         loop {
             match detect(pin, led) {
-                Ok(()) => println!("Success!"),
+                Ok(()) => sleep(Duration::from_secs(1)),
                 Err(err) => println!("Something wrong when detect: {}", err),
             }
-
-            sleep(Duration::from_secs(1));
         }
     } else {
         print_usage();

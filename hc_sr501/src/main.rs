@@ -102,7 +102,7 @@ fn get_args() -> Option<Args> {
 fn main() {
     if let Some(args) = get_args() {
         match detect(args.pin, args.duration_s, args.period_s, args.led) {
-            Ok(()) => println!("Success!"),
+            Ok(()) => println!("Finish!"),
             Err(err) => println!("Something wrong when detect: {}", err),
         }
     } else {

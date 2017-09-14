@@ -72,11 +72,9 @@ fn main() {
 
         loop {
             match calc_distance(output, input) {
-                Ok(()) => println!("Success!"),
+                Ok(()) => sleep(Duration::from_secs(1)),
                 Err(err) => println!("Something wrong when measure: {}", err),
             }
-
-            sleep(Duration::from_secs(1));
         }
     } else {
         print_usage();
