@@ -11,7 +11,7 @@ struct Args {
     pin: u64,
     duration_s: u64,
     period_s: u64,
-    led: Option<u64>
+    led: Option<u64>,
 }
 
 fn detect(pin: u64, duration_s: u64, period_s: u64, led: Option<u64>) -> sysfs_gpio::Result<()> {
@@ -30,11 +30,12 @@ fn detect(pin: u64, duration_s: u64, period_s: u64, led: Option<u64>) -> sysfs_g
                     println!("Blinking.");
 
                     if let Ok(_) = blink(led, period_s * 1000, 200) {
+                        println!("{:?}", input.get_value());
+
                         continue;
                     }
                 }
-                
-                println!("{:?}", input.get_value());
+
             } else {
                 println!("Nobody.");
             }
@@ -47,7 +48,9 @@ fn detect(pin: u64, duration_s: u64, period_s: u64, led: Option<u64>) -> sysfs_g
 }
 
 fn print_usage() {
-    println!("Usage: cargo run <output> <duration_s> <period_s> <(Option) led>");
+    println!(
+        "Usage: cargo run <output> <duration_s> <(Recommend no less than 4)period_s> <(Option) led>"
+    );
 }
 
 fn get_args() -> Option<Args> {
@@ -57,13 +60,29 @@ fn get_args() -> Option<Args> {
 
     let mut led = None;
 
-    if let 4 ... 5 = len {
-        let pin = if let Ok(pin) = args[1].parse::<u64>() { pin } else { return None; };
-        let duration_s = if let Ok(s) = args[2].parse::<u64>() { s } else { return None; };
-        let period_s = if let Ok(s) = args[3].parse::<u64>() { s } else { return None; };
+    if let 4...5 = len {
+        let pin = if let Ok(pin) = args[1].parse::<u64>() {
+            pin
+        } else {
+            return None;
+        };
+        let duration_s = if let Ok(s) = args[2].parse::<u64>() {
+            s
+        } else {
+            return None;
+        };
+        let period_s = if let Ok(s) = args[3].parse::<u64>() {
+            s
+        } else {
+            return None;
+        };
 
         if len == 5 {
-            led = if let Ok(led) = args[4].parse::<u64>() { Some(led) } else { return None; };
+            led = if let Ok(led) = args[4].parse::<u64>() {
+                Some(led)
+            } else {
+                return None;
+            };
         } else {
             println!("Led pin not set.");
         }
@@ -72,7 +91,7 @@ fn get_args() -> Option<Args> {
             pin,
             duration_s,
             period_s,
-            led
+            led,
         })
     } else {
         None
@@ -83,7 +102,7 @@ fn main() {
     if let Some(args) = get_args() {
         match detect(args.pin, args.duration_s, args.period_s, args.led) {
             Ok(()) => println!("Success!"),
-            Err(err) => println!("Something wrong when detect: {}", err)
+            Err(err) => println!("Something wrong when detect: {}", err),
         }
     } else {
         print_usage();
