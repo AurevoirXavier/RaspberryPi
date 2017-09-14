@@ -20,14 +20,14 @@ fn detect(pin: u64, led: Option<u64>) -> sysfs_gpio::Result<()> {
     input.with_exported(|| {
         input.set_direction(Direction::In)?;
 
-        if input.get_value().unwrap() == 1 {
+        if input.get_value().unwrap() == 0 {
             println!("{}, Detected!", Local::now().format("%m-%d-%Y %H:%M:%S"));
 
             if let Some(led) = led {
                 println!("Blinking.");
 
                 match blink(led, 1000, 200) {
-                    Ok(()) => println!("Success!"),
+                    Ok(()) => return Ok(()),
                     Err(err) => println!("Something wrong when blinking: {}", err),
                 }
             }
