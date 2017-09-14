@@ -20,18 +20,14 @@ fn detect(pin: u64, led: Option<u64>) -> sysfs_gpio::Result<()> {
     input.with_exported(|| {
         input.set_direction(Direction::In)?;
 
-        loop {
-            if input.get_value().unwrap() == 1 {
-                println!("{}, Detected!", Local::now().format("%m-%d-%Y %H:%M:%S"));
+        if input.get_value().unwrap() == 1 {
+            println!("{}, Detected!", Local::now().format("%m-%d-%Y %H:%M:%S"));
 
-                if let Some(led) = led {
-                    println!("Blinking.");
+            if let Some(led) = led {
+                println!("Blinking.");
 
-                    if let Ok(_) = blink(led, 1000, 200) { continue; }
-                }
+                if let Ok(_) = blink(led, 1000, 200) { continue; }
             }
-
-            sleep(Duration::from_secs(1));
         }
 
         Ok(())
@@ -65,13 +61,17 @@ fn get_args() -> Option<Args> {
 }
 
 fn main() {
-    match get_args() {
-        None => print_usage(),
-        Some(args) => {
+    if let Some(args) = get_args() {
+        let pin = args.pin;
+        let led = args.led;
+
+        loop {
             match detect(args.pin, args.led) {
                 Ok(()) => println!("Success!"),
                 Err(err) => println!("Something wrong when detect: {}", err),
             }
+
+            sleep(Duration::from_secs(1));
         }
-    }
+    } else { print_usage(); }
 }
