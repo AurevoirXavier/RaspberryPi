@@ -35,10 +35,6 @@ pub fn blink(pin: u64, duration_ms: u64, period_ms: u64) -> sysfs_gpio::Result<(
     })
 }
 
-pub fn print_usage() {
-    println!("Usage: cargo run <pin> <duration_ms> <period_ms>");
-}
-
 pub fn get_args() -> Option<Args> {
     let args: Vec<String> = args().collect();
 
