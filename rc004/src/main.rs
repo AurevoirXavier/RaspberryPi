@@ -48,7 +48,7 @@ fn get_args() -> Option<Args> {
 
     let mut led = None;
 
-    if let 2...2 = len {
+    if let 2...3 = len {
         let pin = if let Ok(pin) = args[1].parse::<u64>() {
             pin
         } else {
