@@ -21,7 +21,7 @@ fn detect(pin: u64, led: Option<u64>) -> sysfs_gpio::Result<()> {
         input.set_direction(Direction::In)?;
 
         if input.get_value().unwrap() == 0 {
-            println!("{}, Sound detected!", Local::now().format("%m-%d-%Y %H:%M:%S"));
+            println!("{}, Fire detected!", Local::now().format("%m-%d-%Y %H:%M:%S"));
 
             if let Some(led) = led {
                 println!("Blinking.");

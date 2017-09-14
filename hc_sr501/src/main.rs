@@ -26,7 +26,7 @@ fn detect(pin: u64, duration_s: u64, period_s: u64, led: Option<u64>) -> sysfs_g
 
         for _ in 0..iterations {
             if input.get_value().unwrap() == 1 {
-                println!("{}, Detected!", Local::now().format("%m-%d-%Y %H:%M:%S"));
+                println!("{}, Human detected!", Local::now().format("%m-%d-%Y %H:%M:%S"));
 
                 if let Some(led) = led {
                     println!("Blinking.");
