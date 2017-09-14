@@ -13,7 +13,7 @@ struct Args {
     pin: u64,
     duration_s: u64,
     period_s: u64,
-    led: Option<u64>,
+    led: Option<u64>
 }
 
 fn detect(pin: u64, duration_s: u64, period_s: u64, led: Option<u64>) -> sysfs_gpio::Result<()> {
@@ -42,6 +42,7 @@ fn detect(pin: u64, duration_s: u64, period_s: u64, led: Option<u64>) -> sysfs_g
                     }
                 }
             }
+            
             sleep(Duration::from_secs(period_s));
         }
 
